@@ -1,0 +1,16 @@
+targets:
+  main:
+    resources:
+      RawSerialPort:
+        port: "/dev/ttyUSB0"
+    drivers:
+      ManualPowerDriver:
+        name: "example"
+      SerialDriver: {}
+      ShellDriver:
+        prompt: 'root@\w+:[^ ]+ '
+        login_prompt: ' login: '
+        username: 'root'
+
+images:
+  update-bundle: /media/enrico/485d48ec-c44e-45b5-ba5c-52e362b1c6f7/YOCTO.BSP-PTX-RPI-Rauc-Demo/build/tmp/deploy/images/raspberrypi3/rpi-demo-bundle-raspberrypi3.raucb
