@@ -1,10 +1,12 @@
-import pytest
+#!/usr/bin/env python3
+
 import time
 
-from labgrid.external import HawkbitTestClient
-from labgrid.driver import InfoDriver
+from hawkbit import HawkbitTestClient
 
-def test_upgrade(hawkbit):
+def test_upgrade():
+
+    hawkbit = HawkbitTestClient("localhost", "8080", username="admin", password="admin")
 
     filename_ptxdist = 'images/rpi-demo-bundle-raspberrypi3.raucb'
     filename_yocto = 'images/update.raucb'
@@ -40,3 +42,9 @@ def test_upgrade(hawkbit):
 
         current_dist_id = 0 if current_dist_id == 1 else 1
         rollout_count += 1
+
+def main():
+    test_upgrade()
+
+if __name__ == "__main__":
+    main()
