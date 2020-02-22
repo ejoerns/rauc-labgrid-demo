@@ -11,6 +11,14 @@ def test_upgrade():
     filename_ptxdist = 'images/rpi-demo-bundle-raspberrypi3.raucb'
     filename_yocto = 'images/update.raucb'
 
+    # Add expected targets
+    hawkbit.add_target("RPI-1", "0815")
+    hawkbit.add_target("RPI-2", "0815")
+    hawkbit.add_target("RPI-3", "0815")
+    hawkbit.add_target("RPI-4", "0815")
+    hawkbit.add_target("RPI-5", "0815")
+    hawkbit.add_target("RPI-6", "0815")
+
     # Create modules with artifacts
     module_id_a = hawkbit.add_swmodule('PTXdist module')
     module_id_b = hawkbit.add_swmodule('Yocto module')
