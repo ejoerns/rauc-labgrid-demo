@@ -66,7 +66,14 @@ def test_upgrade():
             logging.info("Added rollout: #{}".format(rollout_id))
 
         except HawkbitError as e:
-            logging.warning("Adding rollout failed: {}".format(e.json['message']))
+            if e.json['errorCode'] == 'hawkbit.server.error.repo.constraintViolation':
+                logging.warning("No targets registered, yet. Cannot schedule rollout. Retrying in 30 seconds...")
+                time.sleep(30)
+                continue
+            elif e.json['errorCode'] == 'org.eclipse.hawkbit.repository.exception.EntityAlreadyExistsException':
+                logging.warning("Adding rollout failed: {}".format(e.json['message']))
+            else:
+                logging.warning("Adding rollout failed: {}".format(e.json['message']))
 
             try:
                 rollouts = hawkbit.get_endpoint('rollouts')
