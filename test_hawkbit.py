@@ -2,6 +2,7 @@
 
 import time
 import coloredlogs, logging
+from datetime import datetime
 
 from hawkbit import HawkbitTestClient
 from hawkbit import HawkbitError
