@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 
 import time
+import coloredlogs, logging
 
 from hawkbit import HawkbitTestClient
+from hawkbit import HawkbitError
 
 def test_upgrade():
 
@@ -12,22 +14,38 @@ def test_upgrade():
     filename_yocto = 'images/update.raucb'
 
     # Add expected targets
-    hawkbit.add_target("RPI-1", "0815")
-    hawkbit.add_target("RPI-2", "0815")
-    hawkbit.add_target("RPI-3", "0815")
-    hawkbit.add_target("RPI-4", "0815")
-    hawkbit.add_target("RPI-5", "0815")
-    hawkbit.add_target("RPI-6", "0815")
+    try:
+        hawkbit.add_target("RPI-1", "0815")
+        hawkbit.add_target("RPI-2", "0815")
+        hawkbit.add_target("RPI-3", "0815")
+        hawkbit.add_target("RPI-4", "0815")
+        hawkbit.add_target("RPI-5", "0815")
+        hawkbit.add_target("RPI-6", "0815")
+    except HawkbitError as e:
+        logging.warning("Adding targets failed: {}".format(e.json['message']))
 
-    # Create modules with artifacts
-    module_id_a = hawkbit.add_swmodule('PTXdist module')
-    module_id_b = hawkbit.add_swmodule('Yocto module')
-    hawkbit.add_artifact(module_id_a, filename_ptxdist)
-    hawkbit.add_artifact(module_id_b, filename_yocto)
-    # Create distributions of it
+    #hawkbit.add_target("test-target", "0815")
+
     dist_id = [0,0]
-    dist_id[0] = hawkbit.add_distributionset(module_id_a, name="Poky-Test")
-    dist_id[1] = hawkbit.add_distributionset(module_id_b, name="PTXdist-Test1")
+    try:
+        # Create modules with artifacts
+        module_id_a = hawkbit.add_swmodule('PTXdist module')
+        module_id_b = hawkbit.add_swmodule('Yocto module')
+        hawkbit.add_artifact(module_id_a, filename_ptxdist)
+        hawkbit.add_artifact(module_id_b, filename_yocto)
+
+        # Create distributions of it
+        dist_id[0] = hawkbit.add_distributionset(module_id_a, name="Poky-Test")
+        dist_id[1] = hawkbit.add_distributionset(module_id_b, name="PTXdist-Test1")
+    except HawkbitError as e:
+        logging.warning("Adding modules/artifacts/distributions failed: {}".format(e.json['message']))
+
+        dist_id[0] = hawkbit.get_distribution_id("Poky-Test")
+        if not dist_id[0]:
+            raise Exception("Unable to find distriution 'Poky-Test'")
+        dist_id[1] = hawkbit.get_distribution_id("PTXdist-Test1")
+        if not dist_id[1]:
+            raise Exception("Unable to find distriution 'PTXdist-Test1'")
 
     current_dist_id = 0
     rollout_count = 0
@@ -52,7 +70,11 @@ def test_upgrade():
         rollout_count += 1
 
 def main():
-    test_upgrade()
+    coloredlogs.install()
+    try:
+        test_upgrade()
+    except Exception as e:
+        logging.error(e)
 
 if __name__ == "__main__":
     main()
