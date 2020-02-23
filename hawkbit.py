@@ -129,7 +129,9 @@ class HawkbitTestClient:
         if req.status_code != 200 and req.status_code != 201:	
             raise HawkbitError(	
                 'Wrong statuscode, got {} instead of 200/201'.	
-                format(req.status_code)	
+                format(req.status_code),
+                req.status_code,
+                req.json(),
             )	
 
     def post_json(self, endpoint: str, data: dict):	
@@ -145,7 +147,9 @@ class HawkbitTestClient:
         if req.status_code != 200 and req.status_code != 201:	
             raise HawkbitError(	
                 'Wrong statuscode, got {} instead of 200/201, with error {}'.	
-                format(req.status_code, req.json())	
+                format(req.status_code, req.json()),
+                req.status_code,
+                req.json(),
             )	
         return req.json()	
 
@@ -161,7 +165,9 @@ class HawkbitTestClient:
         if req.status_code != 201:	
             raise HawkbitError(	
                 'Wrong statuscode, got {} instead of 201, with error {}'.	
-                format(req.status_code, req.json())	
+                format(req.status_code, req.json()),
+                req.status_code,
+                req.json(),
             )	
         return req.json()	
 
@@ -175,7 +181,9 @@ class HawkbitTestClient:
         if req.status_code != 200:	
             raise HawkbitError(	
                 'Wrong statuscode, got {} instead of 200, with error {}'.	
-                format(req.status_code, req.json())	
+                format(req.status_code, req.json()),
+                req.status_code,
+                req.json(),
             )	
 
     def get_endpoint(self, endpoint: str):	
@@ -190,7 +198,9 @@ class HawkbitTestClient:
         if req.status_code != 200:	
             raise HawkbitError(	
                 'Wrong statuscode, got {} instead of 200, with error {}'.	
-                format(req.status_code, req.json())	
+                format(req.status_code, req.json()),
+                req.status_code,
+                req.json(),
             )	
         return req.json()	
 
@@ -198,3 +208,5 @@ class HawkbitTestClient:
 @attr.s(eq=False)	
 class HawkbitError(Exception):	
     msg = attr.ib()	
+    status_code = attr.ib()	
+    json = attr.ib()	
