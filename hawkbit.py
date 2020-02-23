@@ -14,6 +14,9 @@ class HawkbitTestClient:
     def __attrs_post_init__(self):	
         self.url = 'http://{host}:{port}/rest/v1/{endpoint}'	
 
+    def set_config(self, key, value):
+        self.put('system/configs/{}'.format(key), {"value" : value})	
+
     def add_target(self, target_id: str, token: str):	
         """Add a target to the HawkBit Installation	
         Arguments:	
@@ -177,6 +180,22 @@ class HawkbitTestClient:
                 req.json(),
             )	
         return req.json()	
+
+    def put(self, endpoint: str, data: dict):	
+        req = r.put(	
+            self.url.format(	
+                endpoint=endpoint, host=self.host, port=self.port	
+            ),	
+            auth=(self.username, self.password),	
+            json=data
+        )	
+        if req.status_code != 200 and req.status_code != 201:	
+            raise HawkbitError(	
+                'Wrong statuscode, got {} instead of 200/201'.	
+                format(req.status_code),
+                req.status_code,
+                req.json(),
+            )	
 
     def delete(self, endpoint: str):	
         req = r.delete(	
