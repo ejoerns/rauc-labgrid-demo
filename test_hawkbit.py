@@ -46,13 +46,27 @@ def test_upgrade():
         dist_id[1] = hawkbit.get_distribution_id("PTXdist-Test1")
         if not dist_id[1]:
             raise Exception("Unable to find distriution 'PTXdist-Test1'")
+        logging.info("Got IDs of existing distributions")
 
     current_dist_id = 0
     rollout_count = 0
+    rollout_id = 0
 
     while True:
 
-        rollout_id = hawkbit.add_rollout("Test Rollout #{}".format(rollout_count), dist_id[current_dist_id], 3)
+        try:
+            rollout_id = hawkbit.add_rollout("Test Rollout #{}".format(rollout_count), dist_id[current_dist_id], 3)
+            logging.info("Started rollout: #{}".format(rollout_id))
+        except HawkbitError as e:
+            logging.warning("Adding rollout failed: {}".format(e.json['message']))
+
+            try:
+                rollouts = hawkbit.get_endpoint('rollouts')
+                current_rollout = rollouts['content'][-1]
+                rollout_id = current_rollout['id']
+                logging.info("Got current rollout id: {}".format(rollout_id))
+            except:
+                raise Exception("Failed getting current rollout")
 
         rollout_status = hawkbit.get_endpoint('rollouts/{}'.format(rollout_id))
         while not rollout_status['status'] == 'ready':
