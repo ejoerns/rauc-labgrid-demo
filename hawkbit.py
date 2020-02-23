@@ -70,6 +70,13 @@ class HawkbitTestClient:
                                               testdata)[0]['id']	
         return self.distribution_id	
 
+    def get_distribution_id(self, distname):	
+        distributionsets = self.get_endpoint('distributionsets')
+        for dist in distributionsets['content']:
+            if dist['name'] == distname:
+                return dist['id']
+        return None
+
     def delete_distributionset(self, distset_id: str):	
         """Delete a distrubitionset from the HawkBit Installation	
         Arguments:	
