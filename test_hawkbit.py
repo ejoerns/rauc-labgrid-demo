@@ -76,11 +76,20 @@ def test_upgrade():
                 raise Exception("Failed getting current rollout")
 
         rollout_status = hawkbit.get_endpoint('rollouts/{}'.format(rollout_id))
-        while not rollout_status['status'] == 'ready':
-            time.sleep(1)
-            rollout_status = hawkbit.get_endpoint('rollouts/{}'.format(rollout_id))
+        if rollout_status['status'] == 'creating':
+          logging.info("Waiting for rollout to come up...")
+          while rollout_status['status'] == 'creating':
+              time.sleep(1)
+              print("Rollout status is still: {}".format( rollout_status['status']))
+              rollout_status = hawkbit.get_endpoint('rollouts/{}'.format(rollout_id))
 
-        hawkbit.start_rollout(rollout_id)
+        # start rollout if ready
+        if rollout_status['status'] == 'ready':
+            hawkbit.start_rollout(rollout_id)
+            logging.info("Started rollout: #{}".format(rollout_id))
+
+        if rollout_status['status'] == 'running':
+            logging.info("Rollout is running: #{}".format(rollout_id))
 
         rollout_status = hawkbit.get_endpoint('rollouts/{}'.format(rollout_id))
         while not rollout_status['status'] == 'finished':
