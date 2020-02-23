@@ -61,7 +61,8 @@ def test_upgrade():
 
         try:
             # add rollout
-            rollout_id = hawkbit.add_rollout("Test Rollout #{}".format(rollout_count), dist_id[current_dist_id], 3)
+            rollout_name = "Test Rollout {}".format(datetime.now().strftime("%Y-%m-%d_%H:%M:%S"))
+            rollout_id = hawkbit.add_rollout(rollout_name, dist_id[current_dist_id], 3)
             logging.info("Added rollout: #{}".format(rollout_id))
 
         except HawkbitError as e:
