@@ -32,6 +32,15 @@ class HawkbitTestClient:
 
         self.post_json('targets', testdata)	
 
+    def add_target_filter(self, name: str, query: str):
+        testdata = {	
+            'name': name,	
+            'query' : query
+        }
+
+        response = self.post_json('targetfilters', testdata)
+        return respone['id']
+
     def delete_target(self, target_id: str):	
         """Delete a target from the HawkBit Installation	
         Arguments:	
