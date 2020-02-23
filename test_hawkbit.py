@@ -13,6 +13,9 @@ def test_upgrade():
     filename_ptxdist = 'images/rpi-demo-bundle-raspberrypi3.raucb'
     filename_yocto = 'images/update.raucb'
 
+    # Set config parameters
+    hawkbit.set_config("pollingTime", "00:00:30")
+
     # Add expected targets
     try:
         hawkbit.add_target("RPI-1", "0815")
