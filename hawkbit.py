@@ -120,11 +120,11 @@ class HawkbitTestClient:
         # Increment version to be able to flash over an already deployed distribution	
         self.version = self.version + 0.1	
 
-    def add_rollout(self, name, distribution_id, groups):	
+    def add_rollout(self, name, distribution_id, groups, target_filter="id==*"):	
         testdata = {	
             'name': name,	
             'distributionSetId': distribution_id,	
-            'targetFilterQuery': 'id==*',	
+            'targetFilterQuery': target_filter,
             'amountGroups': groups	
         }	
 
