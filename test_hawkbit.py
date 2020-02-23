@@ -62,7 +62,7 @@ def test_upgrade():
         try:
             # add rollout
             rollout_name = "Test Rollout {}".format(datetime.now().strftime("%Y-%m-%d_%H:%M:%S"))
-            rollout_id = hawkbit.add_rollout(rollout_name, dist_id[current_dist_id], 3)
+            rollout_id = hawkbit.add_rollout(rollout_name, dist_id[current_dist_id], 3, target_filter='id==* and lastcontrollerrequestat=gt=${OVERDUE_TS}')
             logging.info("Added rollout: #{}".format(rollout_id))
 
         except HawkbitError as e:
