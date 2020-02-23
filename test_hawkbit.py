@@ -24,6 +24,7 @@ def test_upgrade():
         hawkbit.add_target("RPI-4", "0815")
         hawkbit.add_target("RPI-5", "0815")
         hawkbit.add_target("RPI-6", "0815")
+        logging.info("Added 6 demo targets")
     except HawkbitError as e:
         logging.warning("Adding targets failed: {}".format(e.json['message']))
 
@@ -40,6 +41,7 @@ def test_upgrade():
         # Create distributions of it
         dist_id[0] = hawkbit.add_distributionset(module_id_a, name="Poky-Test")
         dist_id[1] = hawkbit.add_distributionset(module_id_b, name="PTXdist-Test1")
+        logging.info("Added demo distributions")
     except HawkbitError as e:
         logging.warning("Adding modules/artifacts/distributions failed: {}".format(e.json['message']))
 
@@ -58,8 +60,10 @@ def test_upgrade():
     while True:
 
         try:
+            # add rollout
             rollout_id = hawkbit.add_rollout("Test Rollout #{}".format(rollout_count), dist_id[current_dist_id], 3)
-            logging.info("Started rollout: #{}".format(rollout_id))
+            logging.info("Added rollout: #{}".format(rollout_id))
+
         except HawkbitError as e:
             logging.warning("Adding rollout failed: {}".format(e.json['message']))
 
