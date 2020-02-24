@@ -2,7 +2,7 @@
 
 python3 -m venv test-venv
 . test-venv/bin/activate
-pip install coloredlogs
+pip install coloredlogs attrs requests
 
 ./wait-for-hawkbit-online
 
