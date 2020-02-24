@@ -20,12 +20,12 @@ def test_upgrade():
 
     # Add expected targets
     try:
-        hawkbit.add_target("RPI-1", "0815")
-        hawkbit.add_target("RPI-2", "0815")
-        hawkbit.add_target("RPI-3", "0815")
-        hawkbit.add_target("RPI-4", "0815")
-        hawkbit.add_target("RPI-5", "0815")
-        hawkbit.add_target("RPI-6", "0815")
+        hawkbit.add_target("RPI-1", "ahVahL1Il1shie2aj2poojeChee6ahShu")
+        hawkbit.add_target("RPI-2", "ahVahL1Il1shie2aj2poojeChee6ahShu")
+        hawkbit.add_target("RPI-3", "ahVahL1Il1shie2aj2poojeChee6ahShu")
+        hawkbit.add_target("RPI-4", "ahVahL1Il1shie2aj2poojeChee6ahShu")
+        hawkbit.add_target("RPI-5", "ahVahL1Il1shie2aj2poojeChee6ahShu")
+        hawkbit.add_target("RPI-6", "ahVahL1Il1shie2aj2poojeChee6ahShu")
         logging.info("Added 6 demo targets")
     except HawkbitError as e:
         logging.warning("Adding targets failed: {}".format(e.json['message']))
