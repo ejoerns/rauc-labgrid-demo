@@ -17,6 +17,7 @@ def test_upgrade():
     # Set config parameters
     hawkbit.set_config("pollingTime", "00:00:30")
     hawkbit.set_config("pollingOverdueTime", "00:03:00")
+    hawkbit.set_config("authentication.targettoken.enabled", True)
 
     # Add expected targets
     try:
